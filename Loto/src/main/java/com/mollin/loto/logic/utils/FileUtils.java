@@ -1,6 +1,10 @@
 package com.mollin.loto.logic.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
@@ -12,6 +16,9 @@ import java.util.List;
  * @author MOLLIN Florian
  */
 public class FileUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
+
     /**
      * Constructeur privé car classe utilitaire
      */
@@ -81,6 +88,7 @@ public class FileUtils {
                 Files.createDirectories(directories);
             }
         } catch (IOException ex) {
+            LOGGER.error("Erreur lors de la création des dossiers : {}", directories, ex);
             return false;
         }
         return true;
@@ -98,6 +106,7 @@ public class FileUtils {
         try {
             Files.createFile(file);
         } catch (IOException ex) {
+            LOGGER.error("Erreur lors de la création du fichier : {}", file, ex);
             return false;
         }
         return true;
@@ -114,8 +123,9 @@ public class FileUtils {
     public static boolean write(Path file, String str) {
         createDirectories(file.getParent());
         try {
-            Files.write(file, Arrays.asList(str));
+            Files.writeString(file, str, StandardCharsets.UTF_8);
         } catch (IOException ex) {
+            LOGGER.error("Erreur lors de l'écriture dans le fichier : {}", file, ex);
             return false;
         }
         return true;
@@ -130,8 +140,9 @@ public class FileUtils {
     public static List<String> read(Path file) {
         if (isReadable(file)) {
             try {
-                return Files.readAllLines(file);
+                return Files.readAllLines(file, StandardCharsets.UTF_8);
             } catch (IOException ex) {
+                LOGGER.error("Erreur lors de la lecture du fichier : {}", file, ex);
                 return null;
             }
         } else {
@@ -163,6 +174,7 @@ public class FileUtils {
                 });
                 return true;
             } catch (IOException ex) {
+                LOGGER.error("Erreur lors de la suppression du répertoire : {}", directory, ex);
                 return false;
             }
         } else {
@@ -188,6 +200,7 @@ public class FileUtils {
         try {
             Files.copy(fileToCopy, dirOfCopy, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
+            LOGGER.error("Erreur lors de la copie de {} vers {}", fileToCopy, dirOfCopy, ex);
             return false;
         }
         return true;
