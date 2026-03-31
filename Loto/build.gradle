@@ -1,29 +1,44 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '2.0.1'
+    id 'com.gradleup.shadow' version '8.3.6'
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-sourceCompatibility = 1.8
 
-mainClassName = 'com.mollin.loto.Loto'
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+java {
+    sourceCompatibility = '25'
+    targetCompatibility = '25'
+}
+
+application {
+    mainClass = 'com.mollin.loto.Loto'
+}
+
+javafx {
+    version = "25"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.13'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.1'
-    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
-    compile group: 'org.javatuples', name: 'javatuples', version: '1.2'
-    compile group: 'org.zeroturnaround', name: 'zt-zip', version: '1.12'
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
-    compile group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.25'
+    implementation group: 'org.controlsfx', name: 'controlsfx', version: '11.2.0'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+    implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
+    implementation group: 'org.javatuples', name: 'javatuples', version: '1.2'
+    implementation group: 'org.zeroturnaround', name: 'zt-zip', version: '1.17'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.12'
+    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.12'
     
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.8.0'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.25.3'
 }
 
 jar {
@@ -32,4 +47,9 @@ jar {
             'Main-Class': 'com.mollin.loto.Loto'
         )
     }
+}
+
+// Workaround for Gradle 9 with com.gradleup.shadow 8.3.6
+ext {
+    mainClassName = 'com.mollin.loto.Loto'
 }
