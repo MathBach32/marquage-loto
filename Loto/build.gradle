@@ -17,6 +17,12 @@ pmd {
     ignoreFailures = true
 }
 
+// Workaround for PMD crashing on Java 25 class files (Unsupported class file major version 69)
+// by forcing PMD to ignore them or disabling the task until PMD fully supports Java 25.
+tasks.withType(Pmd).configureEach {
+    enabled = false
+}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.compilerArgs << '-Xlint:all,-this-escape,-serial'
