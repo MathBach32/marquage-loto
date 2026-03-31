@@ -3,6 +3,24 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'checkstyle'
+    id 'pmd'
+}
+
+checkstyle {
+    toolVersion = "10.21.0"
+    ignoreFailures = true
+}
+
+pmd {
+    toolVersion = "7.9.0"
+    ignoreFailures = true
+}
+
+// Workaround for PMD crashing on Java 25 class files (Unsupported class file major version 69)
+// by forcing PMD to ignore them or disabling the task until PMD fully supports Java 25.
+tasks.withType(Pmd).configureEach {
+    enabled = false
 }
 
 tasks.withType(JavaCompile).configureEach {
