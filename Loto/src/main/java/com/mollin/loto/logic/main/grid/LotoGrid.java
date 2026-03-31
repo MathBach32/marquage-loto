@@ -5,7 +5,10 @@ import com.mollin.loto.logic.main.utils.SizedStack;
 import com.mollin.loto.logic.storage.GridStorage;
 import org.javatuples.Pair;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
@@ -109,6 +112,27 @@ public class LotoGrid implements LotoGridInterface, LotoGridGUIListener {
             save();
             fireUpdate();
         }
+    }
+
+    /**
+     * Renvoie la liste des 15 derniers numéros tirés (ordre antéchronologique).
+     *
+     * @return La liste des 15 derniers numéros.
+     */
+    public List<Integer> getLast15DrawnNumbers() {
+        List<Integer> numbers = new ArrayList<>(this.getActualGrid().getNumbers());
+        Collections.reverse(numbers);
+        int toIndex = Math.min(15, numbers.size());
+        return numbers.subList(0, toIndex);
+    }
+
+    /**
+     * Renvoie le nombre de numéros actuellement tirés.
+     *
+     * @return Le nombre de numéros tirés.
+     */
+    public int getDrawnNumbersCount() {
+        return this.getActualGrid().getNumbers().size();
     }
 
     /**

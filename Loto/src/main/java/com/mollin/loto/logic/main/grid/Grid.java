@@ -1,6 +1,6 @@
 package com.mollin.loto.logic.main.grid;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -19,7 +19,7 @@ public class Grid {
      * Constructeur d'une grille vide.
      */
     public Grid() {
-        this.numbers = new HashSet<>();
+        this.numbers = new LinkedHashSet<>();
     }
 
     /**
@@ -37,7 +37,7 @@ public class Grid {
      * @param grid La grille à copier
      */
     public Grid(Grid grid) {
-        this(new HashSet<>(grid.numbers));
+        this(new LinkedHashSet<>(grid.numbers));
     }
 
     /**
