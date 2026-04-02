@@ -1,6 +1,8 @@
 package com.mollin.loto.logic.main.grid;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,10 +18,16 @@ public class Grid {
     private final Set<Integer> numbers;
 
     /**
+     * Historique chronologique des tirages dans cette grille.
+     */
+    private final List<Integer> chronologicalDraws;
+
+    /**
      * Constructeur d'une grille vide.
      */
     public Grid() {
         this.numbers = new LinkedHashSet<>();
+        this.chronologicalDraws = new ArrayList<>();
     }
 
     /**
@@ -29,6 +37,18 @@ public class Grid {
      */
     public Grid(Set<Integer> numbers) {
         this.numbers = numbers;
+        this.chronologicalDraws = new ArrayList<>(numbers);
+    }
+
+    /**
+     * Constructeur privé pour cloner une grille en incluant l'ordre chronologique.
+     *
+     * @param numbers L'ensemble de nombres déjà tirés.
+     * @param chronologicalDraws L'historique chronologique des nombres tirés.
+     */
+    private Grid(Set<Integer> numbers, List<Integer> chronologicalDraws) {
+        this.numbers = numbers;
+        this.chronologicalDraws = chronologicalDraws;
     }
 
     /**
@@ -37,7 +57,7 @@ public class Grid {
      * @param grid La grille à copier
      */
     public Grid(Grid grid) {
-        this(new LinkedHashSet<>(grid.numbers));
+        this(new LinkedHashSet<>(grid.numbers), new ArrayList<>(grid.chronologicalDraws));
     }
 
     /**
@@ -69,6 +89,15 @@ public class Grid {
     }
 
     /**
+     * Renvoie la liste chronologique des numéros tirés.
+     *
+     * @return La liste des numéros tirés par ordre chronologique.
+     */
+    public List<Integer> getChronologicalDraws() {
+        return new ArrayList<>(this.chronologicalDraws);
+    }
+
+    /**
      * Inverse un nombre dans la grille.<br>
      * Si le nombre est présent, il est enlevé, sinon il est ajouté.
      *
@@ -77,8 +106,10 @@ public class Grid {
     private void switchNumber(int number) {
         if (this.numbers.contains(number)) {
             this.numbers.remove(number);
+            this.chronologicalDraws.remove(Integer.valueOf(number));
         } else {
             this.numbers.add(number);
+            this.chronologicalDraws.add(number);
         }
     }
 

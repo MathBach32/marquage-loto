@@ -159,6 +159,22 @@ public class LotoGridTest {
     }
 
     /**
+     * Teste l'ordre chronologique avec une insertion totalement désordonnée.
+     */
+    @Test
+    public void testChronologicalOrderWithRandomInsertion() {
+        LotoGrid grid = new LotoGrid(HISTORY_DEPTH, MAX_NUMBER);
+        grid.clic(42);
+        grid.clic(5);
+        grid.clic(89);
+        grid.clic(12);
+
+        List<Integer> last15 = grid.getLast15DrawnNumbers();
+        assertThat(last15).containsExactly(12, 89, 5, 42);
+        assertThat(grid.getDrawnNumbersCount()).isEqualTo(4);
+    }
+
+    /**
      * Test l'historique et le compteur après une désélection (faux clic).
      */
     @Test
