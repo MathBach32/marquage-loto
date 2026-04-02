@@ -120,7 +120,7 @@ public class LotoGrid implements LotoGridInterface, LotoGridGUIListener {
      * @return La liste des 15 derniers numéros.
      */
     public List<Integer> getLast15DrawnNumbers() {
-        List<Integer> numbers = new ArrayList<>(this.getActualGrid().getNumbers());
+        List<Integer> numbers = this.getActualGrid().getChronologicalDraws();
         Collections.reverse(numbers);
         int toIndex = Math.min(15, numbers.size());
         return numbers.subList(0, toIndex);
